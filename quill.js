@@ -66,6 +66,44 @@ exportAsPdfBtn.addEventListener("click", exportAsPdf);
 
 
 
+//speach to text
+async function speachText(){
+    try {
+        if (annyang) {
+        annyang.setLanguage('en-US'); 
+      
+        // Tell KITT to use annyang
+        SpeechKITT.annyang();
+      
+        // Define a stylesheet for KITT to use
+        SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/themes/flat-midnight-blue.css');
+      
+        SpeechKITT.setInstructionsText('talk and we write');
+      
+        // Render KITT's interface
+        SpeechKITT.vroom();
+      
+            const commands = {
+              '*text': (text) => {
+                  const range = quill.getSelection(true);             
+                  quill.insertText(range.index, text + ' ', 'user');   
+                  quill.setSelection(range.index + text.length + 1, 0, 'silent');
+              }   
+            };
+      
+            annyang.addCommands(commands); 
+      
+            annyang.start({ continuous: true, autoRestart: true }); 
+          } else {
+            alert('Speech recognition not supported in this browser.');
+          }
+
+    } catch (error) {
+        console.error("Error fetching document:", error);
+    }
+}
+
+
 
 
 async function getDocument(){
@@ -124,4 +162,5 @@ quill.on("text-change",(delta, oldDelta, source) => {
 
 
 getDocument()
+speachText()
 

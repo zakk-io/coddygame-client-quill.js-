@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <textarea name="textarea" id="textarea">
+
+    </textarea>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js"></script>
+
+
+ <script>
+if (annyang) {
+      annyang.setLanguage('en-US'); 
+
+  // Tell KITT to use annyang
+  SpeechKITT.annyang();
+
+  // Define a stylesheet for KITT to use
+  SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/1.0.0/themes/flat-midnight-blue.css');
+
+  SpeechKITT.setInstructionsText('talk and we write');
+
+  // Render KITT's interface
+  SpeechKITT.vroom();
+
+      const commands = {
+        '*text': (text) => {
+            console.log(text)
+            const ta = document.getElementById('textarea');
+            ta.value += text + ' ';
+        }   
+      };
+
+      annyang.addCommands(commands); 
+
+      annyang.start({ continuous: true, autoRestart: true }); 
+    } else {
+      alert('Speech recognition not supported in this browser.');
+    }
+  </script>
+
+</body>
+</html>
