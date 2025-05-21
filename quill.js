@@ -6,6 +6,7 @@ var authToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZjNmYTQwNmRkOW
 
 import Quill from "quill"
 import * as QuillWord from "quill-to-word"
+import { pdfExporter } from 'quill-to-pdf';
 import {saveAs} from "file-saver"
 
 
@@ -44,6 +45,24 @@ async function exportAsDoc(){
 }
 const exportAsDocBtn =  document.getElementById("exportAsDocBtn")
 exportAsDocBtn.addEventListener("click", exportAsDoc);
+
+
+
+
+//export document as pdf
+async function exportAsPdf(){
+    try {
+        const content = quill.getContents();
+        const blob = await pdfExporter.generatePdf(content);
+        
+        saveAs(blob, document.title);
+
+    } catch (error) {
+        console.error("Error fetching document:", error);
+    }
+}
+const exportAsPdfBtn =  document.getElementById("exportAsPdfBtn")
+exportAsPdfBtn.addEventListener("click", exportAsPdf);
 
 
 
