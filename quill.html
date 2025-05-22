@@ -7,9 +7,14 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 p-6">
-  <div class="flex justify-between items-center mb-4">
-    <!-- TTS controls on the left -->
-    <div id="ttsControls" class="flex items-center space-x-2 bg-white p-2 rounded-xl shadow-lg max-w-md">
+  <div class="flex justify-between items-center mb-4 relative">
+    <!-- Floating AI Enhance Button with AI icon -->
+    <button id="aiEnhanceBtn" class="absolute left-0 top-0 mt-2 ml-2 bg-indigo-600 text-white p-2 rounded-full shadow hover:bg-indigo-700 focus:outline-none" title="AI Enhance">
+      AI
+    </button>
+
+    <!-- TTS controls on the left (shifted right) -->
+    <div id="ttsControls" class="flex items-center space-x-2 bg-white p-2 rounded-xl shadow-lg max-w-md ml-12">
       <button id="pauseBtn" class="tts-btn bg-yellow-500 text-white p-2 rounded-full hover:bg-yellow-600 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed hidden" title="Pause">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6" />
@@ -38,10 +43,52 @@
     </div>
   </div>
 
+  <!-- AI Enhancement Form (hidden by default) -->
+  <div id="aiFormBackdrop" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40"></div>
+  <div id="aiForm" class="hidden fixed top-16 left-4 bg-white p-4 rounded-lg shadow-lg w-64 z-50"> 
+    <h3 class="text-lg font-semibold mb-2">AI Enhancement</h3>
+    <label class="block mb-2 text-sm font-medium">Writing Style</label>
+    <select id="writingStyle" class="w-full mb-3 border rounded p-1">
+      <option>Academic</option>
+      <option>Casual</option>
+      <option>Professional</option>
+      <option>Creative</option>
+      <option>Persuasive</option>
+    </select>
+    <label class="flex items-center mb-2">
+      <input type="checkbox" id="replaceContent" class="mr-2" /> write for me
+    </label>
+    <textarea id="topicDesc" class="w-full h-16 border rounded p-1 bg-gray-100 hidden" placeholder="Describe what you want to write about..."></textarea>
+    <button id="applyAi" class="w-full mt-2 bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition">Apply</button>
+  </div>
+
   <div id="editor" class="mt-6"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js"></script>
   <script type="module" src="quill.js"></script>
+  <script>
+
+    // AI Form toggle and interactivity
+    const aiBtn = document.getElementById('aiEnhanceBtn');
+    const aiForm = document.getElementById('aiForm');
+    const replaceCheckbox = document.getElementById('replaceContent');
+    const topicDesc = document.getElementById('topicDesc');
+
+    aiBtn.addEventListener('click', () => {
+      aiForm.classList.toggle('hidden');
+    });
+    replaceCheckbox.addEventListener('change', () => {
+      if (replaceCheckbox.checked) {
+        topicDesc.classList.remove('hidden');
+        topicDesc.disabled = false;
+      } else {
+        topicDesc.classList.add('hidden');
+        topicDesc.disabled = true;
+      }
+    });
+
+    // (AI implementation to be handled separately)
+  </script>
 </body>
 </html>

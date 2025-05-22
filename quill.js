@@ -202,6 +202,35 @@ document.addEventListener('speechend', () => {
 
 
 
+//ai content enhancement
+async function aiContentEnhancement() {
+    try {
+        const writingStyle = document.getElementById("writingStyle").value
+        const currentContent = quill.getText()
+        const minWordCount = quill.getText().split(/\s+/).length
+        let prompt;
+
+        const replaceContent = document.getElementById("replaceContent").checked;
+        if(replaceContent){
+            const topic = document.getElementById("topicDesc").value.trim();
+            prompt = `Write about: ${topic} in a ${writingStyle} style.`;
+        }else{
+           prompt = `enhance this text content :${currentContent}, based on this writing style:${writingStyle}, make the content at least:${minWordCount} word`            
+        }
+     
+        const response = await fetch(`https://text.pollinations.ai/${prompt}`)
+        const newContent = await response.text()
+
+    
+        quill.setText(newContent, "user")
+
+    } catch (error) {
+        console.error(error)
+    }
+}
+document.getElementById("applyAi").addEventListener("click",aiContentEnhancement)
+
+
 
 quill.on("text-change",(delta, oldDelta, source) => {
     if(source === "user"){
