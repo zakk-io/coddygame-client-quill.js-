@@ -106,6 +106,8 @@ async function speachText(){
 
 
 
+
+
 async function getDocument(){
     try {
         const response = await fetch(`${baseUri}/api/teams/${teamId}/resources/${resourceId}` , {
@@ -146,6 +148,57 @@ async function writeDocument(content){
     }
 }
 
+
+
+
+
+
+//text to speech
+const playBtn   = document.getElementById('playBtn');
+const pauseBtn  = document.getElementById('pauseBtn');
+const resumeBtn = document.getElementById('resumeBtn');
+const stopBtn   = document.getElementById('stopBtn');
+let utterance;
+
+//speechSynthesis.speak(utterance);
+playBtn.addEventListener('click', () => {
+  const text = quill.getText();
+  utterance = new SpeechSynthesisUtterance(text);
+  speechSynthesis.speak(utterance);
+  pauseBtn.classList.remove('hidden');
+  stopBtn.classList.remove('hidden');
+  playBtn.disabled   = true;
+});
+
+//speechSynthesis.pause()
+pauseBtn.addEventListener('click', () => {
+  speechSynthesis.pause();
+  pauseBtn.classList.add('hidden');
+  resumeBtn.classList.remove('hidden');
+});
+
+resumeBtn.addEventListener('click', () => {
+  speechSynthesis.resume();
+  resumeBtn.classList.add('hidden');
+  pauseBtn.classList.remove('hidden');
+});
+
+stopBtn.addEventListener('click', () => {
+  speechSynthesis.cancel();
+  // Hide control buttons except Play
+  pauseBtn.classList.add('hidden');
+  resumeBtn.classList.add('hidden');
+  stopBtn.classList.add('hidden');
+  playBtn.disabled   = false;
+});
+
+// Reset UI on speech end
+document.addEventListener('speechend', () => {
+  pauseBtn.classList.add('hidden');
+  resumeBtn.classList.add('hidden');
+  stopBtn.classList.add('hidden');
+  playBtn.disabled   = false;
+});
 
 
 
